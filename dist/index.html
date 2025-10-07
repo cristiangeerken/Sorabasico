@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sora Chaining Studio</title>
+  <script type="module" crossorigin src="/assets/index-blMMpjln.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CaOEnB2k.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Sora Chaining Studio</h1>
+      <p class="subtitle">Generate extended videos beyond 12 seconds with AI-planned continuity</p>
+    </header>
+
+    <main>
+      <section class="config-panel">
+        <h2>Configuration</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="apiKey">OpenAI API Key</label>
+            <input
+              type="password"
+              id="apiKey"
+              placeholder="sk-..."
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <small>Stored in memory only, never persisted</small>
+          </div>
+
+          <div class="form-group">
+            <label for="basePrompt">Base Prompt</label>
+            <textarea
+              id="basePrompt"
+              rows="3"
+              placeholder="Describe the video concept you want to generate..."
+            >Gameplay footage of a car driving through a futuristic city in 2027</textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="model">Model</label>
+              <select id="model">
+                <option value="sora-2">Sora 2</option>
+                <option value="sora-2-pro">Sora 2 Pro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="size">Size</label>
+              <select id="size">
+                <option value="1280x720">1280×720 (16:9 Landscape)</option>
+                <option value="720x1280">720×1280 (9:16 Portrait)</option>
+                <option value="1024x1792" disabled>1024×1792 (Pro only)</option>
+                <option value="1792x1024" disabled>1792×1024 (Pro only)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="secondsPerSegment">Seconds per Segment</label>
+              <select id="secondsPerSegment">
+                <option value="4">4 seconds</option>
+                <option value="8" selected>8 seconds</option>
+                <option value="12">12 seconds</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="numSegments">Number of Segments</label>
+              <input
+                type="number"
+                id="numSegments"
+                min="2"
+                max="20"
+                value="3"
+              >
+              <small id="totalDuration">Total: 24 seconds</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="planner-panel">
+        <h2>Planner</h2>
+        <p class="section-desc">Use GPT-5 to generate scene-by-scene prompts with continuity</p>
+
+        <button id="planBtn" class="btn btn-primary">
+          <span class="btn-icon">🎬</span>
+          Plan Segments
+        </button>
+
+        <div id="planOutput" class="plan-output hidden">
+          <h3>Generated Plan</h3>
+          <div id="planSegments"></div>
+        </div>
+      </section>
+
+      <section class="generator-panel">
+        <h2>Generator</h2>
+        <p class="section-desc">Generate video segments with Sora and concatenate into final MP4</p>
+
+        <button id="generateBtn" class="btn btn-success" disabled>
+          <span class="btn-icon">▶</span>
+          Generate Video
+        </button>
+
+        <div id="progressContainer" class="progress-container hidden">
+          <div class="progress-info">
+            <span id="progressText">Initializing...</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="segmentStatus" class="segment-status hidden"></div>
+      </section>
+
+      <section class="preview-panel">
+        <h2>Preview</h2>
+
+        <div id="segmentPreview" class="segment-preview hidden">
+          <h3>Individual Segments</h3>
+          <div id="segmentGallery" class="segment-gallery"></div>
+        </div>
+
+        <div id="finalPreview" class="final-preview hidden">
+          <h3>Final Video</h3>
+          <video id="finalVideo" controls></video>
+          <button id="downloadBtn" class="btn btn-secondary">
+            <span class="btn-icon">⬇</span>
+            Download Video
+          </button>
+        </div>
+      </section>
+
+      <div id="errorDisplay" class="error-display hidden"></div>
+    </main>
+  </div>
+
+</body>
+</html>
